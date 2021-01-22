@@ -10,6 +10,8 @@ class unorderedLinkedList : public linkedListType<Type>
 {
 public:
 
+    int getKThElement(const int k);
+
     void deleteAll(const Type &deleteItem);
     // Delete all occurences of num in list
     // Postcondition: Same as delete smallest except using num as filter
@@ -47,6 +49,18 @@ public:
     //               points to the last node of the updated
     //               list, and count is decremented by 1.
 };
+
+template <class Type>
+int unorderedLinkedList<Type>::getKThElement(const int k) {
+    nodeType<Type>* current;  // pointer to traverse the list
+    int count = 1;
+    current = this->first;            // set current so that it points to the first node
+    while (count != k) { // while more data to print
+        current = current->link;
+        count++;
+    }
+    return current->info;
+}
 
 template <class Type>
 void unorderedLinkedList<Type>::deleteSmallest() {

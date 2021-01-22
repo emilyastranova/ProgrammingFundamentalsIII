@@ -55,7 +55,8 @@ int main() {
     cin >> k;
     cout << endl;
 
-    // todo : temp = list.getKThElement(k);
+    // (Completed) todo : temp = list.getKThElement(k);
+    temp = list.getKThElement(k);
     cout << "Item at position " << k << " = " << temp << endl;
 
     // lab01 part d - deletes the kth element of the linked list. 
