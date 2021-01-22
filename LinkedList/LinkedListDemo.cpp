@@ -38,7 +38,6 @@ int main(){
     cout << "\nNode 2 Addr: " << n2 << endl;
     cout << "Node 2 Value: "; 
     (*n2).printInfo();
-    cout << "Node 2 points to: ";
-    (*n2).printLink();
+    cout << "Node 2 points to: " << n2->link;
     return 0;
 }
