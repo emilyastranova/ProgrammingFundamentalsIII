@@ -65,8 +65,8 @@ int main() {
     cin >> k;
     cout << endl;
 
-    // todo : list.deteteKthElement(k);
-
+    //(Completed) todo : list.deleteKthElement(k);
+    list.deleteKthElement(k);
     cout << "List after removing the element at position " << k << "." << endl;
     list.print();
     cout << endl;

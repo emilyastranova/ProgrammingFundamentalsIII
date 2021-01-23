@@ -10,6 +10,8 @@ class unorderedLinkedList : public linkedListType<Type>
 {
 public:
 
+    void deleteKthElement(const int k);
+
     int getKThElement(const int k);
 
     void deleteAll(const Type &deleteItem);
@@ -49,9 +51,65 @@ public:
     //               points to the last node of the updated
     //               list, and count is decremented by 1.
 };
+template <class Type>
+void unorderedLinkedList<Type>::deleteKthElement(const int k) {
+
+    if(k > this->count){
+        cout << "K is too large. Terminating..." << endl;
+        exit(0);
+    }
+
+    nodeType<Type> *current;                //pointer to traverse the list
+    nodeType<Type> *trailCurrent;           //pointer just before current
+    nodeType<Type> *toBeDeleted;
+    int count = 2;
+                                        //search the list for the node with the given info
+    trailCurrent = this->first;         //set trailCurrent to point to the first node
+    current = this->first->link;        //set current to point to the second node
+
+    cout << "Length of list: " << this->count << endl;
+    if(k == 1){ // If the first element in the list needs deleting
+        cout << "Item found was first. Deleting..." << endl;
+        toBeDeleted = this->first;
+        trailCurrent= current; // Move tail forwards
+        current = current->link; // Move current forwards
+        this->count--;  // Reduce count of items in the list
+        this->first = this->first->link; // Move first forwards
+        delete toBeDeleted;                 //delete the node from the list
+    }
+    else {
+        while (count != k) 
+        {
+            //cout << "Current count is: " << count << endl;
+            if(current == this->last){ // If we delete the last node we need to move it backwards
+                cout << "Item deleted was last, moving last node backwards" << endl;
+                this->last = trailCurrent;
+                this->last->link = nullptr;
+                cout << "Last node is now defined as value: " << this->last->info << endl << endl;
+            }
+            trailCurrent = current;
+            current = current->link;
+            count++;
+        } 
+        // If item found
+        //cout << "Count complete. Arrived at: " << count << endl;
+        //cout << "Value being deleted is: " << trailCurrent->info << endl;
+        toBeDeleted = current;
+        trailCurrent->link = current->link; // Move tail forwards
+        current = current->link;
+        this->count--;  // Reduce count of items in the list
+        delete toBeDeleted;                 //delete the node from the list
+    }
+}
 
 template <class Type>
 int unorderedLinkedList<Type>::getKThElement(const int k) {
+
+    if(k > this->count){
+        cout << "K is too large. Terminating..." << endl;
+        exit(0);
+    }
+
     nodeType<Type>* current;  // pointer to traverse the list
     int count = 1;
     current = this->first;            // set current so that it points to the first node
