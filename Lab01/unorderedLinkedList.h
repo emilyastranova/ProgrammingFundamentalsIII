@@ -10,25 +10,6 @@ class unorderedLinkedList : public linkedListType<Type>
 {
 public:
 
-    void deleteKthElement(const int k);
-    // Delete element at position k (like an index in an array)
-    // Postcondition: Node at k will be removed and the node behind it will
-    //                have it's link moved forwards past the one deleted
-    //                Then the node deleted will be assigned to a temp var and deleted
-
-    int getKThElement(const int k);
-    // Get element at position k (like an index in an array)
-    // Postcondition: The integer inside the info of node K will be returned
-
-    void deleteAll(const Type &deleteItem);
-    // Delete all occurences of num in list
-    // Postcondition: Same as delete smallest except using num as filter
-
-    void deleteSmallest();
-    // Delete the smallest value in the list.
-    // Postcondition: Previous link points to the node after the one deleted
-    //                Node with smallest is assigned to a temp var and deleted from memory
-
     bool search(const Type &searchItem) const;
     //Function to determine whether searchItem is in the list.
     //Postcondition: Returns true if searchItem is in the
@@ -58,7 +39,7 @@ public:
     //               list, and count is decremented by 1.
 };
 template <class Type>
-void unorderedLinkedList<Type>::deleteKthElement(const int k) {
+void linkedListType<Type>::deleteKthElement(const int k) {
 
     if(k > this->count){
         cout << "K is too large. Terminating..." << endl;
@@ -109,7 +90,7 @@ void unorderedLinkedList<Type>::deleteKthElement(const int k) {
 }
 
 template <class Type>
-int unorderedLinkedList<Type>::getKThElement(const int k) {
+int linkedListType<Type>::getKThElement(const int k) {
 
     if(k > this->count){
         cout << "K is too large. Terminating..." << endl;
@@ -127,7 +108,7 @@ int unorderedLinkedList<Type>::getKThElement(const int k) {
 }
 
 template <class Type>
-void unorderedLinkedList<Type>::deleteSmallest() {
+void linkedListType<Type>::deleteSmallest() {
     nodeType<Type>* current;  // pointer to traverse the list
     nodeType<Type>* smallest = this->first; // Set smallest value to first node
 
@@ -164,7 +145,7 @@ void unorderedLinkedList<Type>::deleteSmallest() {
 
 // Here is the proper way to do it in one pass
 template <class Type>
-void unorderedLinkedList<Type>::deleteAll(const Type &deleteItem) {
+void linkedListType<Type>::deleteAll(const Type &deleteItem) {
     nodeType<Type> *current;                //pointer to traverse the list
     nodeType<Type> *trailCurrent;           //pointer just before current
     nodeType<Type> *toBeDeleted;

@@ -89,6 +89,26 @@ bool linkedListIterator<Type>::operator!=(
 template <class Type>
 class linkedListType {
    public:
+
+    void deleteKthElement(const int k);
+    // Delete element at position k (like an index in an array)
+    // Postcondition: Node at k will be removed and the node behind it will
+    //                have it's link moved forwards past the one deleted
+    //                Then the node deleted will be assigned to a temp var and deleted
+
+    int getKThElement(const int k);
+    // Get element at position k (like an index in an array)
+    // Postcondition: The integer inside the info of node K will be returned
+
+    void deleteAll(const Type &deleteItem);
+    // Delete all occurences of num in list
+    // Postcondition: Same as delete smallest except using num as filter
+
+    void deleteSmallest();
+    // Delete the smallest value in the list.
+    // Postcondition: Previous link points to the node after the one deleted
+    //                Node with smallest is assigned to a temp var and deleted from memory
+
     const linkedListType<Type>& operator=(const linkedListType<Type>&);
     // Overload the assignment operator.
 
