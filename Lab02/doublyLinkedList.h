@@ -27,6 +27,9 @@ class doublyLinkedList {
     //               count = 0;
 
     void copyList(const doublyLinkedList<Type> &otherList);
+    // Function to copy otherList to the list calling this function
+    // Postcondition: list will be destroyed and replaced with
+    // values from otherList
 
     bool isEmptyList() const;
     // Function to determine whether the list is empty.
