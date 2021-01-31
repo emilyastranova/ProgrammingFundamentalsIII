@@ -18,13 +18,15 @@ struct nodeType {
 template <class Type>
 class doublyLinkedList {
    public:
-    const doublyLinkedList<Type> &operator=(const doublyLinkedList<Type> &);
+    const doublyLinkedList<Type> &operator=(const doublyLinkedList<Type> &otherList);
     // Overload the assignment operator.
 
     void initializeList();
     // Function to initialize the list to an empty state.
     // Postcondition: first = nullptr; last = nullptr;
     //               count = 0;
+
+    void copyList(const doublyLinkedList<Type> &otherList);
 
     bool isEmptyList() const;
     // Function to determine whether the list is empty.
@@ -101,8 +103,8 @@ class doublyLinkedList {
     nodeType<Type> *first;  // pointer to the first node
     nodeType<Type> *last;   // pointer to the last node
 
-   private:
-    void copyList(const doublyLinkedList<Type> &otherList);
+   //private:
+    //void copyList(const doublyLinkedList<Type> &otherList);
     // Function to make a copy of otherList.
     // Postcondition: A copy of otherList is created and
     //               assigned to this list.
@@ -149,11 +151,14 @@ void doublyLinkedList<Type>::print() const {
     nodeType<Type> *current;  // pointer to traverse the list
 
     current = first;  // set current to point to the first node
-
+    cout << "[";
     while (current != nullptr) {
-        cout << current->info << "  ";  // output info
+        cout << current->info;  // output info
+        if(current->next != nullptr)
+            cout << ", ";
         current = current->next;
     }  // end while
+    cout << "]" << endl;
 }  // end print
 
 template <class Type>
@@ -163,11 +168,14 @@ void doublyLinkedList<Type>::reversePrint() const {
 
     current = last;  // set current to point to the
                      // last node
-
+    cout << "[";
     while (current != nullptr) {
-        cout << current->info << " ";
+        cout << current->info;
+        if(current->back != nullptr)
+            cout << ", ";
         current = current->back;
     }  // end while
+    cout << "]" << endl;
 }  // end reversePrint
 
 template <class Type>
@@ -313,35 +321,39 @@ void doublyLinkedList<Type>::deleteNode(const Type &deleteItem) {
 
 template <class Type>
 void doublyLinkedList<Type>::copyList(const doublyLinkedList<Type> &otherList) {
-    cout << "The definition of this function is left as an exercise." << endl;
-    nodeType<Type> *newNode;  // pointer to create a node
     nodeType<Type> *current;  // pointer to traverse the list
-
-    if (first != nullptr)  // if the list is nonempty, make it empty
-        destroy();
-
-    if (otherList.first == nullptr) {  // otherList is empty
-        // todo
-
-    } else {
-        // todo: copy the first node
-
-        // todo: copy the remaining list
+    destroy(); // Destroy whatever was in the list beforehand
+    
+    current = otherList.first;  // set current to point to the first node
+    while (current != nullptr) {
+        insert(current->info);
+        current = current->next;
     }
 }
 
 template <class Type>
-doublyLinkedList<Type>::doublyLinkedList(
-    const doublyLinkedList<Type> &otherList) {
-    cout << "The definition of the copy constructor is left as an exercise."
-         << endl;
+doublyLinkedList<Type>::doublyLinkedList(const doublyLinkedList<Type> &otherList) {
+    first = nullptr;
+    last = nullptr;
+    count = 0;
+    nodeType<Type> *current;  // pointer to traverse the list
+
+    current = otherList.first;  // set current to point to the first node
+    while (current != nullptr) {
+        insert(current->info);
+        current = current->next;
+    }
 }
 
 template <class Type>
-const doublyLinkedList<Type> &doublyLinkedList<Type>::operator=(
-    const doublyLinkedList<Type> &) {
-    cout << "Overloading the assignment operator is left as an exercise."
-         << endl;
+const doublyLinkedList<Type> &doublyLinkedList<Type>::operator=(const doublyLinkedList<Type> &otherList) {
+    nodeType<Type> *current;  // pointer to traverse the list
+
+    current = otherList.first;  // set current to point to the first node
+    while (current != nullptr) {
+        insert(current->info);
+        current = current->next;
+    }
 }
 
 template <class Type>
