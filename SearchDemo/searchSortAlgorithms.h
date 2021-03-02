@@ -1,12 +1,14 @@
 
 template <class elemType>
-int seqSearch(const elemType list[], int length, const elemType& item, int &count) {
+int seqSearch(const elemType list[], int length, const elemType &item, int &count)
+{
     int loc;
     bool found = false;
 
     loc = 0;
 
-    while (loc < length && !found){
+    while (loc < length && !found)
+    {
         if (list[loc] == item)
             found = true;
         else
@@ -21,31 +23,40 @@ int seqSearch(const elemType list[], int length, const elemType& item, int &coun
 }
 
 template <class elemType>
-int seqSearch(const elemType list[], int length, const elemType& item) {
+int seqSearch(const elemType list[], int length, const elemType &item)
+{
     int dummy;
     seqSearch(list, length, item, dummy);
 }
 
 template <class elemType>
-int binarySearch(const elemType list[], int length, const elemType& item, int &count) {
+int binarySearch(const elemType list[], int length, const elemType &item, int &count)
+{
     int first = 0;
     int last = length - 1;
     int mid;
 
     bool found = false;
 
-    while (first <= last && !found) {
+    while (first <= last && !found)
+    {
         mid = (first + last) / 2;
-        if (list[mid] == item) {
+        if (list[mid] == item)
+        {
             found = true;
             count++;
-        } else {
-            count++;
-            if (list[mid] > item) {
-                last = mid - 1;
-        } else {
-            first = mid + 1;
         }
+        else
+        {
+            count++;
+            if (list[mid] > item)
+            {
+                last = mid - 1;
+            }
+            else
+            {
+                first = mid + 1;
+            }
         }
     }
 
@@ -53,92 +64,109 @@ int binarySearch(const elemType list[], int length, const elemType& item, int &c
         return mid;
     else
         return -1;
-} 
+}
 
 template <class elemType>
-int binarySearch(const elemType list[], int length, const elemType& item) {
+int binarySearch(const elemType list[], int length, const elemType &item)
+{
     int count;
     binarySearch(list, length, item, count);
 }
 
 template <class elemType>
-void bubbleSort(elemType list[], int length) {
-    for (int iteration = 1; iteration < length; iteration++) {
-        for (int index = 0; index < length - iteration; index++) {
-            if (list[index] > list[index + 1]) {
+void bubbleSort(elemType list[], int length)
+{
+    for (int iteration = 1; iteration < length; iteration++)
+    {
+        for (int index = 0; index < length - iteration; index++)
+        {
+            if (list[index] > list[index + 1])
+            {
                 elemType temp = list[index];
                 list[index] = list[index + 1];
                 list[index + 1] = temp;
             }
         }
     }
-}  // end bubbleSort
+} // end bubbleSort
 
 template <class elemType>
-void selectionSort(elemType list[], int length) {
+void selectionSort(elemType list[], int length)
+{
     int loc, minIndex;
 
-    for (loc = 0; loc < length; loc++) {
+    for (loc = 0; loc < length; loc++)
+    {
         minIndex = minLocation(list, loc, length - 1);
         swap(list, loc, minIndex);
     }
-}  // end selectionSort
+} // end selectionSort
 
 template <class elemType>
-void swap(elemType list[], int first, int second) {
+void swap(elemType list[], int first, int second)
+{
     elemType temp;
 
     temp = list[first];
     list[first] = list[second];
     list[second] = temp;
-}  // end swap
+} // end swap
 
 template <class elemType>
-int minLocation(elemType list[], int first, int last) {
+int minLocation(elemType list[], int first, int last)
+{
     int loc, minIndex;
 
     minIndex = first;
 
     for (loc = first + 1; loc <= last; loc++)
-        if (list[loc] < list[minIndex]) minIndex = loc;
+        if (list[loc] < list[minIndex])
+            minIndex = loc;
 
     return minIndex;
-}  // end minLocation
+} // end minLocation
 
 template <class elemType>
-void insertionSort(elemType list[], int length) {
+void insertionSort(elemType list[], int length)
+{
     for (int firstOutOfOrder = 1; firstOutOfOrder < length; firstOutOfOrder++)
-        if (list[firstOutOfOrder] < list[firstOutOfOrder - 1]) {
+        if (list[firstOutOfOrder] < list[firstOutOfOrder - 1])
+        {
             elemType temp = list[firstOutOfOrder];
             int location = firstOutOfOrder;
 
-            do {
+            do
+            {
                 list[location] = list[location - 1];
                 location--;
             } while (location > 0 && list[location - 1] > temp);
 
             list[location] = temp;
         }
-}  // end insertionSort
+} // end insertionSort
 
 template <class elemType>
-void quickSort(elemType list[], int length) {
+void quickSort(elemType list[], int length)
+{
     recQuickSort(list, 0, length - 1);
-}  // end quickSort
+} // end quickSort
 
 template <class elemType>
-void recQuickSort(elemType list[], int first, int last) {
+void recQuickSort(elemType list[], int first, int last)
+{
     int pivotLocation;
 
-    if (first < last) {
+    if (first < last)
+    {
         pivotLocation = partition(list, first, last);
         recQuickSort(list, first, pivotLocation - 1);
         recQuickSort(list, pivotLocation + 1, last);
     }
-}  // end recQuickSort
+} // end recQuickSort
 
 template <class elemType>
-int partition(elemType list[], int first, int last) {
+int partition(elemType list[], int first, int last)
+{
     elemType pivot;
 
     int index, smallIndex;
@@ -149,7 +177,8 @@ int partition(elemType list[], int first, int last) {
     smallIndex = first;
 
     for (index = first + 1; index <= last; index++)
-        if (list[index] < pivot) {
+        if (list[index] < pivot)
+        {
             smallIndex++;
             swap(list, smallIndex, index);
         }
@@ -157,54 +186,60 @@ int partition(elemType list[], int first, int last) {
     swap(list, first, smallIndex);
 
     return smallIndex;
-}  // end partition
+} // end partition
 
 template <class elemType>
-void heapSort(elemType list[], int length) {
+void heapSort(elemType list[], int length)
+{
     buildHeap(list, length);
 
     for (int lastOutOfOrder = length - 1; lastOutOfOrder >= 0;
-         lastOutOfOrder--) {
+         lastOutOfOrder--)
+    {
         elemType temp = list[lastOutOfOrder];
         list[lastOutOfOrder] = list[0];
         list[0] = temp;
         heapify(list, 0, lastOutOfOrder - 1);
-    }  // end for
-}  // end heapSort
+    } // end for
+} // end heapSort
 
 template <class elemType>
-void heapify(elemType list[], int low, int high) {
+void heapify(elemType list[], int low, int high)
+{
     int largeIndex;
 
-    elemType temp = list[low];  // copy the root node of
-                                // the subtree
+    elemType temp = list[low]; // copy the root node of
+                               // the subtree
 
-    largeIndex = 2 * low + 1;  // index of the left child
+    largeIndex = 2 * low + 1; // index of the left child
 
-    while (largeIndex <= high) {
+    while (largeIndex <= high)
+    {
         if (largeIndex < high)
             if (list[largeIndex] < list[largeIndex + 1])
-                largeIndex = largeIndex + 1;  // index of the
-                                              // largest child
+                largeIndex = largeIndex + 1; // index of the
+                                             // largest child
 
-        if (temp > list[largeIndex])  // subtree
-                                      // is already in a heap
+        if (temp > list[largeIndex]) // subtree
+                                     // is already in a heap
             break;
-        else {
-            list[low] = list[largeIndex];  // move the larger
-                                           // child to the root
-            low = largeIndex;  // go to the subtree to
-                               // restore the heap
+        else
+        {
+            list[low] = list[largeIndex]; // move the larger
+                                          // child to the root
+            low = largeIndex;             // go to the subtree to
+                                          // restore the heap
             largeIndex = 2 * low + 1;
         }
-    }  // end while
+    } // end while
 
-    list[low] = temp;  // insert temp into the tree,
-                       // that is, list
-}  // end heapify
+    list[low] = temp; // insert temp into the tree,
+                      // that is, list
+} // end heapify
 
 template <class elemType>
-void buildHeap(elemType list[], int length) {
+void buildHeap(elemType list[], int length)
+{
     for (int index = length / 2 - 1; index >= 0; index--)
         heapify(list, index, length - 1);
 }

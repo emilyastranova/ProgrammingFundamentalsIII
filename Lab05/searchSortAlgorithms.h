@@ -105,14 +105,14 @@ void selectionSort(elemType list[], int length, int &compSelectionSort, int &ass
     {
         minIndex = minLocation(list, loc, length - 1, compSelectionSort);
         swap(list, loc, minIndex);
-        assignSelectionSort+=2;
+        assignSelectionSort += 2;
     }
 } //end selectionSort
 
 template <class elemType>
 void insertionSort(elemType list[], int length, int &compInsertionSort, int &assignInsertionSort)
 {
-    for (int firstOutOfOrder = 1; firstOutOfOrder < length;firstOutOfOrder++)
+    for (int firstOutOfOrder = 1; firstOutOfOrder < length; firstOutOfOrder++)
     {
         if (list[firstOutOfOrder] < list[firstOutOfOrder - 1])
         {
