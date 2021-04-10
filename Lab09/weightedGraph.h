@@ -7,6 +7,7 @@
 #include <iomanip>
 #include <iostream>
 
+#include "animationLibrary.h"
 #include "graphType.h"
 
 using namespace std;
@@ -55,14 +56,14 @@ class weightedGraphType : public graphType {
 
 void weightedGraphType::createWeightedGraph() {
     ifstream infile;
-    // char fileName[50];
-    string fileName = "graphData.txt";
+    char fileName[50];
+    // string fileName = "graphData.txt";
 
     int vertex;
     int adjacentVertex;
 
     cout << "Enter input file name: ";
-    //cin >> fileName;
+    cin >> fileName;
     cout << endl;
 
     infile.open(fileName);
@@ -135,14 +136,45 @@ void weightedGraphType::shortestPath(int vertex) {
 }  // end shortestPath
 
 void weightedGraphType::printShortestDistance(int vertex) {
-    cout << "Source Vertex: " << vertex << endl;
-    cout << "Shortest Distance from Source to each Vertex." << endl;
-    cout << "Vertex  Shortest_Distance" << endl;
+    cout << endl;
+    typewriter("[Narrator] The Roomba wakes up in existential dread, just like any other Tuesday.\n"); delay(0.5);
+    typewriter("[Narrator] It readies itself in the first room, ground zero.\n"); delay(0.5);
+    typewriter("[Narrator] The sad little vaccuum begins scanning rooms to calculate todays path"); loadingDots(2); cout << endl; delay(0.5);
+    typewriter("[Narrator] It comes back with the infamous NULLPTR EXCEPTION. Heartbroken, the Roomba tries again"); loadingDots(2); cout << endl; delay(0.5);
+    typewriter("[Narrator] This time, the scan reports "); cout << gSize; typewriter(" rooms.\n\n");
+    typewriter("-------------------------\n",0.025); delay(0.5);
+    cout << "Rooms  Shortest Distance" << endl; delay(0.5);
 
     for (int j = 0; j < gSize; j++)
+    {
         cout << setw(4) << j << setw(12) << smallestWeight[j] << endl;
+        delay(0.25);
+    }
+    
+    int shortestNum = 0;
+    int temp = smallestWeight[1];
+    for (int j = 1; j < gSize; j++)
+    {
+        if(smallestWeight[j] < temp)
+        {
+            shortestNum = j;
+            temp = smallestWeight[j];
+        }
+    }
+    typewriter("-------------------------\n",0.025); delay(0.5);
     cout << endl;
-}  // end printShortestDistance
+    typewriter("[Roomba]   \"Good enough... I guess\"\n\n"); delay(0.5);
+    typewriter("[Narrator] Even though the poor guy has no potential, it does its work without complaint.\n"); delay(0.5);
+    typewriter("[Narrator] Hmm... Amazon could really use more vaccuums like this one.\n"); delay(0.5);
+    typewriter("[Narrator] No workers' rights necessary. Not that they had any to begin with"); loadingDots(1); cout << endl << endl; delay(0.5);
+    typewriter("[Roomba]   \"Navigating to the closest room"); loadingDots(1); typewriter(" thats umm"); loadingDots(1); cout << " room " << shortestNum; typewriter(" I think?\"\n" ); delay(0.5);
+    typewriter("[Narrator] Wondering why Cyber Jesus brought him into this world, the Roomba sulked to room "); cout << shortestNum << "." << endl; delay(0.5);
+    typewriter("[Narrator] As the suffering vaccuum slaved away cleaning the Harrison Family Estate,"); delay(0.5); typewriter("\nthe Roomba managed to knock some framed pictures off of a table.\n"); delay(0.5);
+    typewriter("[Roomba]   \"I'd say I suck at my job, "); delay(0.5); typewriter("but even that isn't true. "); delay(0.5); typewriter("I SUCK "); delay(0.5); typewriter("at SUCKING.\"\n"); delay(0.5); 
+    typewriter("[Roomba]   \"Its my only job! "); delay(0.5); typewriter("Why did God curse me with this "); delay(0.5);
+    typewriter("AWFUL "); delay(0.5); typewriter("EXISTENCE!\"\n"); delay(1);
+    
+}
 
 // Constructor
 weightedGraphType::weightedGraphType(int size) : graphType(size) {
