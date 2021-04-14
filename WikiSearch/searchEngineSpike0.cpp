@@ -1,0 +1,42 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <iterator>
+
+int main()
+{
+
+  std::vector<int> v1 = {5, 10, 15, 20, 50};
+  std::vector<int> v2 = {50, 40, 30, 20, 5};
+  std::vector<int> v3 = {1, 2, 20, 4, 5, 50};
+  std::vector<int> v4 = {5, 20, 31, 200, 51};
+  std::vector<int> vResult;
+
+  std::ostream_iterator<int> screen(std::cout, " ");
+
+  std::cout << "v1 = ";
+  std::copy(v1.begin(), v1.end(), screen);
+  std::cout << std::endl;
+
+  std::cout << "v2 = ";
+  std::copy(v2.begin(), v2.end(), screen);
+  std::cout << std::endl;
+
+  std::cout << "v3 = ";
+  std::copy(v3.begin(), v3.end(), screen);
+  std::cout << std::endl;
+
+  std::sort(v1.begin(), v1.end());
+  std::sort(v2.begin(), v2.end());
+  std::sort(v3.begin(), v3.end());
+
+  std::set_intersection(v1.begin(), v1.end(), v2.begin(), v2.end(), std::inserter(vResult, vResult.begin()));
+  std::set_intersection(vResult.begin(), vResult.end(), v3.begin(), v3.end(), std::back_inserter(vResult));
+  // I'm aware this is a bad solution
+  sort(vResult.begin(), vResult.end());
+  vResult.erase(unique(vResult.begin(), vResult.end()), vResult.end()); 
+  std::cout << "\nIntersecting values:\n";
+  std::copy(vResult.begin(), vResult.end(), screen);
+
+  return 0;
+}
