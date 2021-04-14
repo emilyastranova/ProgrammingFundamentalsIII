@@ -1,10 +1,11 @@
 #include <iostream>
-
+#include "customObject.h"
  
 using namespace std;
 
 int main() 
 {
-    cout << sizeof(double);
+    customObject temp;
+    temp.doSomething();
     return 0;
 }
