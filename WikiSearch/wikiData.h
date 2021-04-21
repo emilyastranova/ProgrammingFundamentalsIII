@@ -7,7 +7,6 @@
 
 class wikiData {
    public:
-
     std::string operator[](std::size_t index) const {
         return std::string(&m_line[m_data[index] + 1], m_data[index + 1] - (m_data[index] + 1));
     }
