@@ -9,12 +9,10 @@
 
 using namespace std;
 
-istream& operator>>(istream& str, wikiData& data) {
-    data.readNextRow(str);
-    return str;
-}
-
 int main() {
+
+    // Credit: paddy
+    // https://stackoverflow.com/questions/14347033/reading-a-sequence-of-words-to-add-them-in-a-vector
 
     // Get all words on one line
     cout << "Enter search term: " << flush;
