@@ -1,8 +1,8 @@
 #include <iostream>
 #include <map>
 #include <vector>
-#include "wikiData.h"
-#include "wikiEntry.h"
+#include "../../wikiData.h"
+#include "../wikiEntrySpike/wikiEntry.h"
 
 using namespace std;
 
@@ -13,7 +13,7 @@ istream& operator>>(istream& str, wikiData& data) {
 
 int main() {
 
-    ifstream file("wikiData.dat");
+    ifstream file("../wikiData.dat");
     if(file.fail()) {
         cout << "File failed to load" << endl;
         exit(1);
@@ -34,16 +34,21 @@ int main() {
 
     // Get user search query
     string userInput;
-    cout << "Enter search query: ";
-    cin >> userInput;
-
-    // showing contents:
-    map<string, wikiEntry>::iterator it = entries.begin();
-    for (it = entries.begin(); it != entries.end(); ++it) {
-        if (it->first.find(toLower(userInput)) != string::npos) {
-            cout << "\nName: " << it->first << endl;
-            cout << "NS: " << it->second.pairType.first << endl;
-            cout << "ID: " << it->second.pairType.second << endl;
+    while(1){
+        cout << "Enter search query: ";
+        cin >> userInput;
+        if(userInput == "exit()")
+            exit(1);
+        // showing contents:
+        map<string, wikiEntry>::iterator it = entries.begin();
+        for (it = entries.begin(); it != entries.end(); ++it) {
+            if (it->first.find(toLower(userInput)) != string::npos) {
+                cout << "\nName: " << it->first << endl;
+                cout << "NS: " << it->second.pairType.first << endl;
+                cout << "ID: " << it->second.pairType.second << endl;
+            }
         }
+    
     }
+
 }
