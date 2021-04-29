@@ -5,6 +5,7 @@
 #include <vector>
 #include <map>
 #include <locale>
+#include "../../wikiData.h"
 
 using namespace std;
 class wikiEntry {
@@ -15,6 +16,8 @@ class wikiEntry {
     wikiEntry(string rawData);
     ~wikiEntry();
 
+    void readInData(map<string, wikiEntry> &entries);
+    void printEntryVector(vector<wikiEntry> vResult);
     void search(map<string, wikiEntry> entries, string userInput, vector<wikiEntry> resultVector);
     void printEntry();
     string parseTitle(string rawData);  // Used for returning the title from a raw .dat entry string
@@ -25,8 +28,34 @@ class wikiEntry {
     pair<string, string> pairType;
     bool operator== (const wikiEntry &other);
     inline bool operator < (const wikiEntry& rhs) const;
+    istream& operator >> (wikiData& data);
 };
 
+istream& operator>>(istream& str, wikiData& data) {
+    data.readNextRow(str);
+    return str;
+}
+
+void printEntryVector(vector<wikiEntry> vResult) {
+    // Find longest result
+    vector<wikiEntry>::iterator resultIt;
+    int longest = 0;
+    for(resultIt = vResult.begin(); resultIt != vResult.end(); ++resultIt){
+        if((signed)(resultIt->title.length()) > longest)
+            longest = resultIt->title.length();
+    }
+
+    if (vResult.empty())
+        cout << "\nNo results found" << endl;
+    else
+    {
+        cout << "\nSearch Results:\n------------------\n";
+        for(resultIt = vResult.begin(); resultIt != vResult.end(); ++resultIt){
+            cout << resultIt->title << setw(8+longest-resultIt->title.length()) << "[NS] " << resultIt->pairType.first << setw(18-resultIt->pairType.first.length()) << "[ID] " << resultIt->pairType.second << endl;
+        }
+    }
+    cout << endl;
+}
 
 string parseTitle(string rawData) {
     stringstream data(rawData);
@@ -65,6 +94,23 @@ void insertEntry(map<string, wikiEntry> &entries, string rawData) {
     entries.insert(pair<string, wikiEntry>(toLower(parseTitle(rawData)), wikiEntry(rawData)));
 }
 
+void readInData(map<string, wikiEntry> &entries) {
+    ifstream file("../wikiData.dat");
+    if(file.fail()) {
+        cout << "File failed to load" << endl;
+        exit(1);
+    }
+    else
+        cout << "wikiData loaded successfully!" << endl << endl;
+
+    
+    // Get input from the file
+    wikiData row;
+    while (file >> row) {
+        insertEntry(entries, row[2], row[0], row[1]);
+    }
+}
+
 void wikiEntry::printEntry()
 {
     cout << "Title: " << title << "\nNamespace: " << pairType.first << "\nID: " << pairType.second << endl;
@@ -101,18 +147,19 @@ bool wikiEntry::operator==(const wikiEntry &other) {
 }
 
 bool wikiEntry::operator<(const wikiEntry &other) const {
-    if (stoi(this->pairType.first) < stoi(other.pairType.first) || stoi(this->pairType.second) < stoi(other.pairType.second)) {
-        return true;
-    } else {
-        return false;
-    }
+    // Truman's Implementation Below:
+    // if (stoi(this->pairType.first) < stoi(other.pairType.first) || stoi(this->pairType.second) < stoi(other.pairType.second)) {
+    //     return true;
+    // } else {
+    //     return false;
+    // }
     
     // Lars Implementation Below:
-    //return (
-    //   make_pair(stoi(this->pairType.first), stoi(this->pairType.second))
-    //   <
-    //     make_pair(stoi(rhs.pairType.first), stoi(rhs.pairType.second))
-    //  );
+    return (
+      make_pair(stoi(this->pairType.first), stoi(this->pairType.second))
+      <
+        make_pair(stoi(other.pairType.first), stoi(other.pairType.second))
+     );
 }
 
 #endif
