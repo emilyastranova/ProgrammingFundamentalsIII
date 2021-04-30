@@ -16,6 +16,7 @@ class wikiEntry {
     wikiEntry(string rawData);
     ~wikiEntry();
 
+    void getUserInput(vector<string> &userSearchTerms);
     void readInData(map<string, wikiEntry> &entries);
     void printEntryVector(vector<wikiEntry> vResult);
     void search(map<string, wikiEntry> entries, string userInput, vector<wikiEntry> resultVector);
@@ -34,6 +35,22 @@ class wikiEntry {
 istream& operator>>(istream& str, wikiData& data) {
     data.readNextRow(str);
     return str;
+}
+
+void getUserInput(vector<string> &userSearchTerms) {
+    // Credit: paddy
+    // https://stackoverflow.com/questions/14347033/reading-a-sequence-of-words-to-add-them-in-a-vector
+    //-------------------------------------------------------
+    // Get all words on one line                            |
+    cout << "Enter search term: " << flush; //              |
+    string allwords; //                                     |
+    getline(cin, allwords); //                              |
+    //                                                      |
+    // Parse words into a vector                            |
+    string word; //                                         |
+    istringstream iss(allwords); //                         |
+    while( iss >> word ) userSearchTerms.push_back(word);// |
+    //-------------------------------------------------------
 }
 
 void printEntryVector(vector<wikiEntry> vResult) {

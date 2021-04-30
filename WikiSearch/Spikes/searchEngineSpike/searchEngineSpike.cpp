@@ -5,14 +5,8 @@
 #include <vector>
 #include <map>
 #include "../wikiEntrySpike/wikiEntry.h"
-#include "../../wikiData.h"
 
 using namespace std;
-
-istream& operator>>(istream& str, wikiData& data) {
-    data.readNextRow(str);
-    return str;
-}
 
 int main() {
 
@@ -20,66 +14,61 @@ int main() {
     map<string, wikiEntry> entries;
     readInData(entries);
 
-    vector<vector<wikiEntry>> theMOAV; // The Mother of All Vectors
-    vector<vector<wikiEntry>>::iterator moavIterator;
-    vector<wikiEntry> vResult;
-    vector<wikiEntry>::iterator vResultIt;
-    vector<string> userSearchTerms;
-    vector<string>::iterator userSearchIt;
+    vector<string> userSearchTerms; vector<string>::iterator userSearchIt;
     
+    vector<wikiEntry> flushVector;
+    vector<wikiEntry> currentVector;
+    vector<wikiEntry> vResult;
 
-    // Credit: paddy
-    // https://stackoverflow.com/questions/14347033/reading-a-sequence-of-words-to-add-them-in-a-vector
-    //-------------------------------------------------------
-    // Get all words on one line                            |
-    cout << "Enter search term: " << flush; //              |
-    string allwords; //                                     |
-    getline(cin, allwords); //                              |
-    //                                                      |
-    // Parse words into a vector                            |
-    string word; //                                         |
-    istringstream iss(allwords); //                         |
-    while( iss >> word ) userSearchTerms.push_back(word);// |
-    //-------------------------------------------------------
-
-    // 
-
+    // Get user search terms and store in a vector of strings
+    getUserInput(userSearchTerms);
     userSearchIt = userSearchTerms.begin(); // Iterator for all the search terms
-    moavIterator = theMOAV.begin(); // Iterator for the vector of results
 
-    for(userSearchIt = userSearchTerms.begin(); userSearchIt != userSearchTerms.end(); ++userSearchIt) {
-        theMOAV.insert(theMOAV.begin(), vector<wikiEntry>());
-        moavIterator = theMOAV.begin(); // Move the MOAV iterator forwards for next result
-        search(entries, *userSearchIt, *moavIterator); // Store results in a vector of wikiEntries in the MOAV
+    // Iterate through the terms and set intersect at the same time... Oh god why
+    /*
+        1) Search through first term 
+        2) Store the results in a vector (flushVector). Only using this once, then it becomes a swap 
+        3) Search through second term
+        4) Temporarily store in another vector (currentVector)
+        5) Only store the intersecting values vResults
+        6) Move currentVector forwards
+        7) Do set_intersection on vResults and currentVector
+        8) Store that in flushVector
+        9) Clear vResults
+        10) Move from flushVector to vResults
+        11) Loop to step 5
+    */ 
+
+    // First runtime
+    search(entries, *userSearchIt, flushVector);
+    ++userSearchIt;
+
+    // Handle a single word
+    if(userSearchIt == userSearchTerms.end()) {
+        printEntryVector(flushVector);
+        exit(1);
     }
 
-    // This code is bad
-    moavIterator = theMOAV.begin(); // Outside the MOAV
-    vResultIt = (*moavIterator).begin(); // Inside the MOAV
-    if (theMOAV.empty())
-        cout << "\nNo results found" << endl;
-    else
-        cout << "\nSearch Results:\n------------------\n";
-        for(moavIterator = theMOAV.begin(); moavIterator != theMOAV.end(); ++moavIterator){
-            cout << "Results for: " << (*moavIterator).begin()->title << endl;
-            sort((*moavIterator).begin(), (*moavIterator).end());
-            for(vResultIt = (*moavIterator).begin(); vResultIt != (*moavIterator).end(); ++vResultIt)
-                cout << vResultIt->title << " [NS] " << vResultIt->pairType.first << " [ID] " << vResultIt->pairType.second << endl;
-            cout << "-------------------------------------" << endl;
-        }
-    cout << endl;
+    // Do the second word
+    search(entries, *userSearchIt, currentVector);
+    ++userSearchIt;
+    sort(flushVector.begin(), flushVector.end()); sort(currentVector.begin(), currentVector.end());
+    set_intersection(flushVector.begin(), flushVector.end(), currentVector.begin(), currentVector.end(), back_inserter(vResult));
 
-    // TODO: This needs to be infinite
-    //sort(v1.begin(), v1.end());
-    //set_intersection(v1.begin(), v1.end(), v2.begin(), v2.end(), inserter(vResult, vResult.begin()));
-
-    // This code is bad
-    moavIterator = theMOAV.begin();
-    vector<wikiEntry> temp = (*moavIterator);
-    ++moavIterator;
-    vector<wikiEntry> temp2 = (*moavIterator);
-    ++moavIterator;
-    set_intersection(temp.begin(), temp.end(), temp2.begin(), temp2.end(), inserter(vResult, vResult.begin()));
+    // Handle any other words
+    for(userSearchIt; userSearchIt != userSearchTerms.end(); ++userSearchIt) {
+        currentVector.clear();
+        flushVector.clear();
+        search(entries, *userSearchIt, currentVector);
+        sort(vResult.begin(), vResult.end()); sort(currentVector.begin(), currentVector.end());
+        set_intersection(currentVector.begin(), currentVector.end(), vResult.begin(), vResult.end(), back_inserter(flushVector));
+        
+        vResult.clear();
+        vResult = flushVector;
+        flushVector.clear();
+    }
+    
+    // Print final results
     printEntryVector(vResult);
 
     return 0;
