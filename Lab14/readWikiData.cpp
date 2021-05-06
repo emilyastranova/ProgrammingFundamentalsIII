@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include <cctype>
+#include <thread>
 #include <mutex>
 
 #include "wikiData.h"
@@ -16,20 +17,31 @@ std::istream& operator>>(std::istream& str, wikiData& data) {
     return str;
 }
 
-int main() {
-    int count = 0;
-
-    std::ifstream file("wikiData0.dat");
-    
-    std::cout << file.fail() << std::endl;
+void addToQueue(string filename) {
+    mtx.lock();
+    std::ifstream file(filename);
+    cout << file.fail() << endl;
+    mtx.unlock();
 
     wikiData row;
     while (file >> row) {
+        mtx.lock();
         titles.push_back(row[2]);
+        cout << "[File: " << filename << "] - " << row[2] << endl;
+        mtx.unlock();
     }
     
-    for (const auto &t : titles) {
-        cout << t << endl;
-    }
     cout << "titles count : " << titles.size() << endl;
+
+}
+
+int main() {
+    int count = 0;
+
+    thread t1(addToQueue, "wikiData0.dat");
+    thread t2(addToQueue, "wikiData1.dat");
+
+    t1.join();
+    t2.join();
+
 }
